@@ -36,7 +36,7 @@ enum class PlayTextFieldType {
 }
 
 @Composable
-fun PlayTextFieldType(
+fun PlayTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
