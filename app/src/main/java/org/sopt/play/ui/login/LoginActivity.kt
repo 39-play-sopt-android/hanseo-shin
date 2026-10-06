@@ -41,9 +41,12 @@ class LoginActivity : ComponentActivity() {
                             email == registeredEmail &&
                             password == registeredPassword
                         ) {
-                            startActivity(
-                                Intent(this, MainActivity::class.java)
-                            )
+                            val intent = Intent(this, MainActivity::class.java).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            } // 심화 과제 3
+
+                            startActivity(intent)
                         } else {
                             Toast.makeText(
                                 this,
