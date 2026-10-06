@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,14 +18,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import org.sopt.play.ui.component.PlayButton
 import org.sopt.play.ui.component.PlayTextField
 import org.sopt.play.ui.component.PlayTextFieldType
-import org.sopt.play.ui.theme.Gray6
 import org.sopt.play.ui.theme.PlayTypography
 import org.sopt.play.ui.theme.White
+
 
 @Composable
 fun RegisterScreen(
@@ -57,6 +62,22 @@ fun RegisterScreen(
         null
     }
 
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val nextKeyboardActions = KeyboardActions(
+        onNext = {
+            focusManager.moveFocus(FocusDirection.Down)
+        }
+    )
+
+    val doneKeyboardActions = KeyboardActions(
+        onDone = {
+            focusManager.clearFocus()
+            keyboardController?.hide()
+        }
+    )
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -80,7 +101,9 @@ fun RegisterScreen(
             label = "이메일 주소",
             placeholder = "abc@email.com",
             type = PlayTextFieldType.Email,
-            errorMessage = emailError
+            errorMessage = emailError,
+            imeAction = ImeAction.Next,
+            keyboardActions = nextKeyboardActions
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -91,7 +114,9 @@ fun RegisterScreen(
             label = "비밀번호",
             placeholder = "6자 이상의 비밀번호",
             type = PlayTextFieldType.Password,
-            errorMessage = passwordError
+            errorMessage = passwordError,
+            imeAction = ImeAction.Next,
+            keyboardActions = nextKeyboardActions
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -102,7 +127,9 @@ fun RegisterScreen(
             label = "비밀번호 확인",
             placeholder = "비밀번호를 다시 입력해주세요.",
             type = PlayTextFieldType.Password,
-            errorMessage = passwordConfirmError
+            errorMessage = passwordConfirmError,
+            imeAction = ImeAction.Done,
+            keyboardActions = doneKeyboardActions
         )
 
         Spacer(modifier = Modifier.height(40.dp))

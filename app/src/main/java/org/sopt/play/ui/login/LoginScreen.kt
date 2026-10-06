@@ -32,6 +32,11 @@ import org.sopt.play.ui.theme.Gray3
 import org.sopt.play.ui.theme.Gray6
 import org.sopt.play.ui.theme.PlayTypography
 import org.sopt.play.ui.theme.White
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 
 @Composable
 fun LoginScreen(
@@ -57,6 +62,22 @@ fun LoginScreen(
         null
     }
 
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val nextKeyboardActions = KeyboardActions(
+        onNext = {
+            focusManager.moveFocus(FocusDirection.Down)
+        }
+    )
+
+    val doneKeyboardActions = KeyboardActions(
+        onDone = {
+            focusManager.clearFocus()
+            keyboardController?.hide()
+        }
+    )
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -80,7 +101,9 @@ fun LoginScreen(
             label = "이메일 주소",
             placeholder = "abc@email.com",
             type = PlayTextFieldType.Email,
-            errorMessage = emailError
+            errorMessage = emailError,
+            imeAction = ImeAction.Next,
+            keyboardActions = nextKeyboardActions
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -91,7 +114,9 @@ fun LoginScreen(
             label = "비밀번호",
             placeholder = "6자 이상의 비밀번호",
             type = PlayTextFieldType.Password,
-            errorMessage = passwordError
+            errorMessage = passwordError,
+            imeAction = ImeAction.Done,
+            keyboardActions = doneKeyboardActions
         )
 
         Spacer(modifier = Modifier.height(40.dp))
