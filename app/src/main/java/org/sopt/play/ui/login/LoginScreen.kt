@@ -37,6 +37,8 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.remember
 
 @Composable
 fun LoginScreen(
@@ -148,7 +150,11 @@ fun LoginScreen(
                 style = PlayTypography.m14,
                 color = Gray6,
                 modifier = Modifier
-                    .clickable(onClick = onRegisterClick)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onRegisterClick
+                    )
                     .padding(horizontal = 12.dp)
             )
         }
