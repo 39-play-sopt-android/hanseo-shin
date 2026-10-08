@@ -43,7 +43,7 @@ class LoginActivity : ComponentActivity() {
                             email == registeredEmail &&
                             password == registeredPassword
                         ) {
-                            val intent = Intent(this, MainActivity::class.java).apply {
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                                         Intent.FLAG_ACTIVITY_CLEAR_TASK
                             } // 심화 과제 3
