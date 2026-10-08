@@ -92,7 +92,7 @@ fun PlayTextField(
             visualTransformation = if (
                 type == PlayTextFieldType.Password
             ) {
-                PasswordVisualTransformation(mask = '•')
+                PasswordVisualTransformation()
             } else {
                 VisualTransformation.None
             },
