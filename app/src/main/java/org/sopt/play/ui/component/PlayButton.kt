@@ -2,7 +2,7 @@ package org.sopt.play.ui.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -31,7 +31,7 @@ fun PlayButton(
             onClick = onClick,
             enabled = enabled,
             modifier = modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(100.dp),
+            shape = CircleShape,
             contentPadding = PaddingValues(16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Black,
