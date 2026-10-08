@@ -33,7 +33,6 @@ import org.sopt.play.ui.theme.Gray6
 import org.sopt.play.ui.theme.PlayTypography
 import org.sopt.play.ui.theme.White
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -67,12 +66,6 @@ fun LoginScreen(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val nextKeyboardActions = KeyboardActions(
-        onNext = {
-            focusManager.moveFocus(FocusDirection.Down)
-        }
-    )
-
     val doneKeyboardActions = KeyboardActions(
         onDone = {
             focusManager.clearFocus()
@@ -104,8 +97,7 @@ fun LoginScreen(
             placeholder = "abc@email.com",
             type = PlayTextFieldType.Email,
             errorMessage = emailError,
-            imeAction = ImeAction.Next,
-            keyboardActions = nextKeyboardActions
+            imeAction = ImeAction.Next
         )
 
         Spacer(modifier = Modifier.height(32.dp))

@@ -18,7 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -65,12 +64,6 @@ fun RegisterScreen(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    val nextKeyboardActions = KeyboardActions(
-        onNext = {
-            focusManager.moveFocus(FocusDirection.Down)
-        }
-    )
-
     val doneKeyboardActions = KeyboardActions(
         onDone = {
             focusManager.clearFocus()
@@ -102,8 +95,7 @@ fun RegisterScreen(
             placeholder = "abc@email.com",
             type = PlayTextFieldType.Email,
             errorMessage = emailError,
-            imeAction = ImeAction.Next,
-            keyboardActions = nextKeyboardActions
+            imeAction = ImeAction.Next
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -115,8 +107,7 @@ fun RegisterScreen(
             placeholder = "6자 이상의 비밀번호",
             type = PlayTextFieldType.Password,
             errorMessage = passwordError,
-            imeAction = ImeAction.Next,
-            keyboardActions = nextKeyboardActions
+            imeAction = ImeAction.Next
         )
 
         Spacer(modifier = Modifier.height(32.dp))
