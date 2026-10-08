@@ -87,7 +87,7 @@ fun LoginScreen(
             .safeDrawingPadding()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 16.dp)
-            .padding(top = 112.dp)
+            .padding(top = 60.dp)
     ) {
         Text(
             text = "이메일로 로그인하기",
