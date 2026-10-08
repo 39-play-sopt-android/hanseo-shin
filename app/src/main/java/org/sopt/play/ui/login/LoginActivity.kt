@@ -51,7 +51,7 @@ class LoginActivity : ComponentActivity() {
                             startActivity(intent)
                         } else {
                             Toast.makeText(
-                                this,
+                                this@LoginActivity,
                                 "이메일 또는 비밀번호가 올바르지 않아요.",
                                 Toast.LENGTH_SHORT
                             ).show()
