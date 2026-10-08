@@ -85,7 +85,7 @@ fun PlayTextField(
                     color = borderColor,
                     shape = RoundedCornerShape(12.dp)
                 )
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+                .padding(all = 16.dp),
             textStyle = PlayTypography.m18,
             singleLine = true, // 텍스트 입력값이 길어져도 한줄로 유지할 수 있게하는 속성 ( 심화 과제 1-1)
             cursorBrush = SolidColor(Gray5),
