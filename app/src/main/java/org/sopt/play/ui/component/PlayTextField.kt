@@ -121,9 +121,9 @@ fun PlayTextField(
 
             Text(
                 text = errorMessage,
-                style = PlayTypography.m14,
+                modifier = Modifier.padding(start = 8.dp),
                 color = Red,
-                modifier = Modifier.padding(start = 8.dp)
+                style = PlayTypography.m14
             )
         }
     }
