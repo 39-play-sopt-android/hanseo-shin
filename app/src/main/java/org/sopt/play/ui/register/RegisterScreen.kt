@@ -35,6 +35,7 @@ fun RegisterScreen(
     onRegisterClick: (email: String, password: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var name by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var passwordConfirm by rememberSaveable { mutableStateOf("") }
@@ -89,6 +90,17 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(40.dp))
 
         PlayTextField(
+            value = name,
+            onValueChange = { name = it },
+            label = "이름",
+            placeholder = "홍길동",
+            type = PlayTextFieldType.Text,
+            imeAction = ImeAction.Next
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        PlayTextField(
             value = email,
             onValueChange = { email = it },
             label = "이메일 주소",
@@ -127,7 +139,8 @@ fun RegisterScreen(
 
         PlayButton(
             text = "회원가입",
-            enabled = isEmailValid &&
+            enabled = name.isNotBlank() &&
+                    isEmailValid &&
                     isPasswordValid &&
                     isPasswordConfirmValid,
             onClick = {
