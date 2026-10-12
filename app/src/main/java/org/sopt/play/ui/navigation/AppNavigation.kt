@@ -54,7 +54,7 @@ fun AppNavigation(
                             password == registeredPassword
                         ) {
                             backStack.clear()
-                            backStack.add(Route.Home)
+                            backStack.add(Route.Main)
                         } else {
                             Toast.makeText(
                                 context,
@@ -83,15 +83,14 @@ fun AppNavigation(
                 )
             }
 
-            entry<Route.Home> {
-                // 홈 UI를 구현하기 전까지 사용할 임시 화면
+            entry<Route.Main> {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .safeDrawingPadding(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "홈 화면")
+                    Text(text = "메인 화면")
                 }
             }
         }
