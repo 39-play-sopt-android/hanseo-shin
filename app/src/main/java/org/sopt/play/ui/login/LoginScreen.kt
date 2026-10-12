@@ -38,6 +38,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.remember
+import androidx.compose.ui.tooling.preview.Preview
+import org.sopt.play.ui.theme.PlaySoptTheme
 
 @Composable
 fun LoginScreen(
@@ -150,5 +152,21 @@ fun LoginScreen(
                     .padding(horizontal = 12.dp)
             )
         }
+    }
+}
+
+@Preview(
+    name = "기본",
+    showBackground = true,
+    widthDp = 360,
+    heightDp = 800
+)
+@Composable
+private fun LoginScreenPreview() {
+    PlaySoptTheme {
+        LoginScreen(
+            onLoginClick = { _, _ -> },
+            onRegisterClick = {}
+        )
     }
 }

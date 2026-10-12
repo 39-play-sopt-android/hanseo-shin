@@ -22,10 +22,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.ui.component.PlayButton
 import org.sopt.play.ui.component.PlayTextField
 import org.sopt.play.ui.component.PlayTextFieldType
+import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.PlayTypography
 import org.sopt.play.ui.theme.White
 
@@ -149,3 +151,19 @@ fun RegisterScreen(
         )
     }
 }
+
+@Preview(
+    name = "기본",
+    showBackground = true,
+    widthDp = 360,
+    heightDp = 800
+)
+@Composable
+private fun RegisterScreenPreview() {
+    PlaySoptTheme {
+        RegisterScreen(
+            onRegisterClick = { _, _ -> }
+        )
+    }
+}
+
