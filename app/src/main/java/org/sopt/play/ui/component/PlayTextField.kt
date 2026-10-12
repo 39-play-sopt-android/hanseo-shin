@@ -1,11 +1,10 @@
 package org.sopt.play.ui.component
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -63,7 +62,10 @@ fun PlayTextField(
         PlayTextFieldType.Password -> KeyboardType.Password
     }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
         // 상단 라벨
         Text(
             text = label,
@@ -71,8 +73,6 @@ fun PlayTextField(
             color = Gray6,
             modifier = Modifier.padding(start = 8.dp)
         )
-
-        Spacer(modifier = Modifier.height(6.dp))
 
         BasicTextField(
             value = value,
@@ -117,8 +117,6 @@ fun PlayTextField(
         )
 
         if (errorMessage != null){
-            Spacer(modifier = Modifier.height(6.dp))
-
             Text(
                 text = errorMessage,
                 modifier = Modifier.padding(start = 8.dp),
