@@ -14,7 +14,7 @@ fun HomeRecommendationTitle(
     Text(
         text = "${name}님을 위한 추천 아이템",
         modifier = modifier,
-        style = PlayTypography.sb16,
+        style = PlayTypography.m18,
         color = Black
     )
 }
