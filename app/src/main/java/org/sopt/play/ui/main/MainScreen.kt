@@ -17,9 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.play.ui.component.BottomTab
 import org.sopt.play.ui.component.PlayBottomBar
+import org.sopt.play.ui.favorite.FavoriteScreen
 import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.White
 import org.sopt.play.ui.home.HomeScreen
+import org.sopt.play.ui.mypage.MyPageScreen
 
 @Composable
 fun MainScreen(
@@ -51,8 +53,8 @@ fun MainScreen(
         ) {
             when (selectedTab) {
                 BottomTab.Home -> HomeScreen()
-                BottomTab.Favorite -> Text(text = "찜 화면")
-                BottomTab.MyPage -> Text(text = "마이페이지 화면")
+                BottomTab.Favorite -> FavoriteScreen()
+                BottomTab.MyPage -> MyPageScreen()
             }
         }
     }
