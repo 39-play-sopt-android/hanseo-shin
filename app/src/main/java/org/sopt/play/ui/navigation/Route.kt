@@ -14,7 +14,7 @@ sealed interface Route : NavKey {
     @Serializable
     data object Register : Route
 
-    // 홈화면
+    // 바텀바가 포함된 메인 화면
     @Serializable
-    data object Home : Route
+    data object Main : Route
 }
