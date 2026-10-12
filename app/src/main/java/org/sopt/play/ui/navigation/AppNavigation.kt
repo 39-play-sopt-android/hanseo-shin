@@ -1,16 +1,11 @@
 package org.sopt.play.ui.navigation
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation3.runtime.entryProvider
@@ -19,6 +14,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import org.sopt.play.ui.login.LoginScreen
 import org.sopt.play.ui.register.RegisterScreen
+import org.sopt.play.ui.main.MainScreen
 
 @Composable
 fun AppNavigation(
@@ -84,14 +80,7 @@ fun AppNavigation(
             }
 
             entry<Route.Main> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .safeDrawingPadding(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = "메인 화면")
-                }
+                MainScreen()
             }
         }
     )
