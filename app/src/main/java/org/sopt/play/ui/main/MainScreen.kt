@@ -19,6 +19,7 @@ import org.sopt.play.ui.component.BottomTab
 import org.sopt.play.ui.component.PlayBottomBar
 import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.White
+import org.sopt.play.ui.home.HomeScreen
 
 @Composable
 fun MainScreen(
@@ -49,7 +50,7 @@ fun MainScreen(
             contentAlignment = Alignment.Center
         ) {
             when (selectedTab) {
-                BottomTab.Home -> Text(text = "홈 화면")
+                BottomTab.Home -> HomeScreen()
                 BottomTab.Favorite -> Text(text = "찜 화면")
                 BottomTab.MyPage -> Text(text = "마이페이지 화면")
             }
