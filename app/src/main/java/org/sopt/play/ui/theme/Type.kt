@@ -9,12 +9,21 @@ import androidx.compose.ui.unit.sp
 import org.sopt.play.R
 
 val Pretendard = FontFamily(
+    Font(R.font.pretendard_regular, FontWeight.Normal),
     Font(R.font.pretendard_medium, FontWeight.Medium),
     Font(R.font.pretendard_semibold, FontWeight.SemiBold),
     Font(R.font.pretendard_bold, FontWeight.Bold)
 )
 
 object PlayTypography {
+    val r14 = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 16.8.sp,
+        letterSpacing = (-0.01).em
+    )
+
     val b28 = TextStyle(
         fontFamily = Pretendard,
         fontWeight = FontWeight.Bold,
