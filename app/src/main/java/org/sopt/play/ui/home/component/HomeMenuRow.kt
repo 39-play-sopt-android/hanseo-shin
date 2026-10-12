@@ -5,7 +5,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import org.sopt.play.ui.component.HomeMenu
+import org.sopt.play.ui.component.PlayMenu
 import org.sopt.play.ui.theme.PlaySoptTheme
 
 enum class HomeMenuType(val title: String) {
@@ -28,7 +28,7 @@ fun HomeMenuRow(
         modifier = modifier
     ) {
         items(HomeMenuType.entries) { menu ->
-            HomeMenu(
+            PlayMenu(
                 text = menu.title,
                 selected = menu == selectedMenu,
                 onClick = { onMenuClick(menu) }

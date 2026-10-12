@@ -24,7 +24,7 @@ import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.PlayTypography
 
 @Composable
-fun HomeMenu(
+fun PlayMenu(
     text: String,
     selected: Boolean,
     onClick: () -> Unit,
@@ -65,12 +65,12 @@ fun HomeMenu(
 private fun HomeMenuPreview() {
     PlaySoptTheme {
         Row {
-            HomeMenu(
+            PlayMenu(
                 text = "메뉴",
                 selected = true,
                 onClick = {}
             )
-            HomeMenu(
+            PlayMenu(
                 text = "메뉴",
                 selected = false,
                 onClick = {}
