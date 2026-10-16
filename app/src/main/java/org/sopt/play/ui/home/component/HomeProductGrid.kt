@@ -24,8 +24,7 @@ fun HomeProductGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 96.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
             items = products,
