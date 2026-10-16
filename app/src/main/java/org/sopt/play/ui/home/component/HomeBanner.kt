@@ -3,7 +3,7 @@ package org.sopt.play.ui.home.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
@@ -38,10 +38,9 @@ fun HomeBanner(
         Image(
             painter = painterResource(images[page]),
             contentDescription = "홈 배너 ${page + 1}",
-            modifier = Modifier.size(
-                width = 328.dp,
-                height = 195.dp
-            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(195.dp),
             contentScale = ContentScale.Crop
         )
     }
