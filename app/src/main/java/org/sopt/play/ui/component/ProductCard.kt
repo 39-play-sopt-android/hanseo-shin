@@ -1,6 +1,5 @@
 package org.sopt.play.ui.component
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
+import org.sopt.play.ui.home.model.HomeProduct
 import org.sopt.play.ui.theme.Black
 import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.PlayTypography
@@ -29,13 +29,8 @@ import org.sopt.play.ui.theme.Red
 
 @Composable
 fun ProductCard(
-    @DrawableRes imageRes: Int,
-    storeName: String,
-    productName: String,
-    discountRate: Int,
-    price: String,
-    modifier: Modifier = Modifier,
-    isFavorite: Boolean = false
+    product: HomeProduct,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         Box(
@@ -44,8 +39,8 @@ fun ProductCard(
                 .aspectRatio(160f / 200f)
         ) {
             Image(
-                painter = painterResource(imageRes),
-                contentDescription = productName,
+                painter = painterResource(product.imageRes),
+                contentDescription = product.productName,
                 modifier = Modifier.matchParentSize(),
                 contentScale = ContentScale.Crop
             )
@@ -58,19 +53,19 @@ fun ProductCard(
             ) {
                 Icon(
                     painter = painterResource(
-                        if (isFavorite) {
+                        if (product.isFavorite) {
                             R.drawable.ic_favorite_fill
                         } else {
                             R.drawable.ic_favorite
                         }
                     ),
-                    contentDescription = if (isFavorite) {
+                    contentDescription = if (product.isFavorite) {
                         "좋아요 선택됨"
                     } else {
                         "좋아요 선택 안 됨"
                     },
                     modifier = Modifier.size(24.dp),
-                    tint = if (isFavorite) Red else Color.White
+                    tint = if (product.isFavorite) Red else Color.White
                 )
             }
         }
@@ -87,7 +82,7 @@ fun ProductCard(
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Text(
-                text = storeName,
+                text = product.storeName,
                 style = PlayTypography.m14,
                 color = Black,
                 maxLines = 1,
@@ -95,7 +90,7 @@ fun ProductCard(
             )
 
             Text(
-                text = productName,
+                text = product.productName,
                 style = PlayTypography.r14,
                 color = Black,
                 maxLines = 1,
@@ -106,13 +101,13 @@ fun ProductCard(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = "$discountRate%",
+                    text = "${product.discountRate}%",
                     style = PlayTypography.m14,
                     color = Red
                 )
 
                 Text(
-                    text = price,
+                    text = product.price,
                     style = PlayTypography.m14,
                     color = Black
                 )
@@ -129,22 +124,28 @@ private fun ProductCardPreview() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             ProductCard(
-                imageRes = android.R.drawable.ic_menu_gallery,
-                storeName = "스토어명",
-                productName = "상품명",
-                discountRate = 49,
-                price = "29,370",
+                product = HomeProduct(
+                    id = 1,
+                    imageRes = android.R.drawable.ic_menu_gallery,
+                    storeName = "스토어명",
+                    productName = "상품명",
+                    discountRate = 49,
+                    price = "29,370"
+                ),
                 modifier = Modifier.weight(1f)
             )
 
             ProductCard(
-                imageRes = android.R.drawable.ic_menu_gallery,
-                storeName = "한 줄을 넘어가는 아주 긴 스토어명",
-                productName = "한 줄을 넘어가는 아주 긴 상품명",
-                discountRate = 49,
-                price = "29,370",
-                modifier = Modifier.weight(1f),
-                isFavorite = true
+                product = HomeProduct(
+                    id = 2,
+                    imageRes = android.R.drawable.ic_menu_gallery,
+                    storeName = "한 줄을 넘어가는 아주 긴 스토어명",
+                    productName = "한 줄을 넘어가는 아주 긴 상품명",
+                    discountRate = 49,
+                    price = "29,370",
+                    isFavorite = true
+                ),
+                modifier = Modifier.weight(1f)
             )
         }
     }

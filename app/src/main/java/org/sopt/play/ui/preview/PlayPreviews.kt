@@ -252,23 +252,29 @@ private fun ProductCardStatesPreview() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             ProductCard(
-                imageRes = R.drawable.img_home_product_1,
-                storeName = "스토어명",
-                productName = "상품명",
-                discountRate = 36,
-                price = "28,800",
-                modifier = Modifier.weight(1f),
-                isFavorite = false
+                product = HomeProduct(
+                    id = 1,
+                    imageRes = R.drawable.img_home_product_1,
+                    storeName = "스토어명",
+                    productName = "상품명",
+                    discountRate = 36,
+                    price = "28,800",
+                    isFavorite = false
+                ),
+                modifier = Modifier.weight(1f)
             )
 
             ProductCard(
-                imageRes = R.drawable.img_home_product_2,
-                storeName = "한 줄을 넘어가는 아주 긴 스토어명",
-                productName = "한 줄을 넘어가는 아주 긴 상품명입니다",
-                discountRate = 50,
-                price = "26,820",
-                modifier = Modifier.weight(1f),
-                isFavorite = true
+                product = HomeProduct(
+                    id = 2,
+                    imageRes = R.drawable.img_home_product_2,
+                    storeName = "한 줄을 넘어가는 아주 긴 스토어명",
+                    productName = "한 줄을 넘어가는 아주 긴 상품명입니다",
+                    discountRate = 50,
+                    price = "26,820",
+                    isFavorite = true
+                ),
+                modifier = Modifier.weight(1f)
             )
         }
     }

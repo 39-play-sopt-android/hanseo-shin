@@ -32,12 +32,7 @@ fun HomeProductGrid(
             key = { product -> product.id}
         ) { product ->
             ProductCard(
-                imageRes = product.imageRes,
-                storeName = product.storeName,
-                productName = product.productName,
-                discountRate = product.discountRate,
-                price = product.price,
-                isFavorite = product.isFavorite
+                product = product
             )
         }
     }
