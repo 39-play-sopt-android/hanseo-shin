@@ -308,7 +308,7 @@ private fun HomeTopBarPreview() {
 private fun HomeMenuRowPreview() {
     PlaySoptTheme {
         HomeMenuRow(
-            selectedMenu = HomeMenuType.Home,
+            selectedMenu = HomeMenuType.HOME,
             onMenuClick = {}
         )
     }
@@ -341,7 +341,7 @@ private fun RecommendationTitlePreview() {
 private fun CategoryRowPreview() {
     PlaySoptTheme {
         HomeCategoryRow(
-            selectedCategory = HomeCategory.All,
+            selectedCategory = HomeCategory.ALL,
             onCategoryClick = {}
         )
     }

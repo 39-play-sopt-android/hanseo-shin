@@ -9,13 +9,13 @@ import org.sopt.play.ui.component.PlayMenu
 import org.sopt.play.ui.theme.PlaySoptTheme
 
 enum class HomeMenuType(val title: String) {
-    DoubleReward("2배적립"),
-    Home("홈"),
-    Selected("셀렉티드"),
-    Brand("브랜드"),
-    Beauty("뷰티"),
-    Life("라이프"),
-    Ranking("랭킹")
+    DOUBLE_REWARD("2배적립"),
+    HOME("홈"),
+    SELECTED("셀렉티드"),
+    BRAND("브랜드"),
+    BEAUTY("뷰티"),
+    LIFE("라이프"),
+    RANKING("랭킹")
 }
 
 @Composable
@@ -42,7 +42,7 @@ fun HomeMenuRow(
 private fun HomeMenuRowPreview() {
     PlaySoptTheme {
         HomeMenuRow(
-            selectedMenu = HomeMenuType.Home,
+            selectedMenu = HomeMenuType.HOME,
             onMenuClick = {}
         )
     }

@@ -11,16 +11,16 @@ import org.sopt.play.ui.component.PlayChip
 import org.sopt.play.ui.theme.PlaySoptTheme
 
 enum class HomeCategory(val title: String){
-    All("전체"),
-    Top("상의"),
-    Pants("팬츠"),
-    OnePiece("원피스"),
-    Outer("아우터"),
-    Skirt("스커트"),
-    Shoes("슈즈"),
-    Bag("가방"),
-    Innerwear("이너웨어/잠옷"),
-    PhoneAccessory("폰꾸미기")
+    ALL("전체"),
+    TOP("상의"),
+    PANTS("팬츠"),
+    ONE_PIECE("원피스"),
+    OUTER("아우터"),
+    SKIRT("스커트"),
+    SHOES("슈즈"),
+    BAG("가방"),
+    INNERWEAR("이너웨어/잠옷"),
+    PHONE_ACCESSORY("폰꾸미기")
 }
 
 @Composable
@@ -48,7 +48,7 @@ fun HomeCategoryRow(
 private fun HomeCategoryRowPreview() {
     PlaySoptTheme {
         HomeCategoryRow(
-            selectedCategory = HomeCategory.All,
+            selectedCategory = HomeCategory.ALL,
             onCategoryClick = {}
         )
     }

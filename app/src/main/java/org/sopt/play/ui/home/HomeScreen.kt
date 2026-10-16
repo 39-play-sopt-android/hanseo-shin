@@ -32,8 +32,8 @@ import org.sopt.play.ui.theme.PlayTypography
 fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
-    var selectedMenu by rememberSaveable { mutableStateOf(HomeMenuType.Home) }
-    var selectedCategory by rememberSaveable { mutableStateOf(HomeCategory.All) }
+    var selectedMenu by rememberSaveable { mutableStateOf(HomeMenuType.HOME) }
+    var selectedCategory by rememberSaveable { mutableStateOf(HomeCategory.ALL) }
 
     Column(
         modifier = modifier.fillMaxSize()
