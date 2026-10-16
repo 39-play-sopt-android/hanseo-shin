@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.sopt.play.R
 import org.sopt.play.ui.theme.Black
+import org.sopt.play.ui.theme.Gray2
 import org.sopt.play.ui.theme.Gray5
 import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.PlayTypography
@@ -54,51 +56,62 @@ fun PlayBottomBar(
     onTabClick: (BottomTab) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .background(White)
     ) {
-        BottomTab.entries.forEach { tab ->
-            val selected = tab == selectedTab
-            val color = if (selected) Black else Gray5
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = Gray2
+        )
 
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable(
-                        interactionSource = remember {
-                            MutableInteractionSource()
-                        },
-                        indication = null,
-                        onClick = { onTabClick(tab) }
-                    )
-                    .padding(vertical = 6.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
-                Icon(
-                    painter = painterResource(
-                        if (selected) {
-                            tab.selectedIconRes
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(White)
+        ) {
+            BottomTab.entries.forEach { tab ->
+                val selected = tab == selectedTab
+                val color = if (selected) Black else Gray5
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable(
+                            interactionSource = remember {
+                                MutableInteractionSource()
+                            },
+                            indication = null,
+                            onClick = { onTabClick(tab) }
+                        )
+                        .padding(vertical = 6.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            if (selected) {
+                                tab.selectedIconRes
+                            } else {
+                                tab.iconRes
+                            }
+                        ),
+                        contentDescription = if (selected) {
+                            "선택한 탭"
                         } else {
-                            tab.iconRes
-                        }
-                    ),
-                    contentDescription = if (selected) {
-                        "선택한 탭"
-                    } else {
-                        "선택안한 탭"
-                    },
-                    modifier = Modifier.size(24.dp),
-                    tint = color
-                )
+                            "선택안한 탭"
+                        },
+                        modifier = Modifier.size(24.dp),
+                        tint = color
+                    )
 
-                Text(
-                    text = tab.title,
-                    color = color,
-                    style = PlayTypography.sb14
-                )
+                    Text(
+                        text = tab.title,
+                        color = color,
+                        style = PlayTypography.sb14
+                    )
+                }
             }
         }
     }
