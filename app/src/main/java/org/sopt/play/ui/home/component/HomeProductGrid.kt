@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
@@ -18,7 +19,8 @@ import org.sopt.play.R
 @Composable
 fun HomeProductGrid(
     products: List<HomeProduct>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    header: (@Composable () -> Unit)? = null
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -26,6 +28,15 @@ fun HomeProductGrid(
         contentPadding = PaddingValues(bottom = 96.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
+        if (header != null) {
+            item(
+                key = "home_header",
+                span = { GridItemSpan(maxLineSpan) }
+            ) {
+                header()
+            }
+        }
+
         items(
             items = products,
             key = { product -> product.id}

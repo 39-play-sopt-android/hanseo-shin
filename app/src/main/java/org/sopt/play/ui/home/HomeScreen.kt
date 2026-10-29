@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,9 +23,7 @@ import org.sopt.play.ui.home.component.HomeMenuType
 import org.sopt.play.ui.home.component.HomeProductGrid
 import org.sopt.play.ui.home.component.HomeRecommendationTitle
 import org.sopt.play.ui.home.model.HomeProduct
-import org.sopt.play.ui.theme.Black
 import org.sopt.play.ui.theme.PlaySoptTheme
-import org.sopt.play.ui.theme.PlayTypography
 
 @Composable
 fun HomeScreen(
@@ -42,35 +39,38 @@ fun HomeScreen(
             onSearchClick = {}
         )
 
-        HomeMenuRow(
-            selectedMenu = selectedMenu,
-            onMenuClick = { selectedMenu = it }
-        )
-
-        HomeBanner(
-            images = homeBannerImages
-        )
-
-        Spacer(modifier = Modifier.height(28.dp))
-
-        HomeRecommendationTitle(
-            name = "김솝트",
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        HomeCategoryRow(
-            selectedCategory = selectedCategory,
-            onCategoryClick = { selectedCategory = it },
-            modifier = Modifier.padding(start = 16.dp)
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
         HomeProductGrid(
             products = homeProducts,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            header = {
+                Column {
+                    HomeMenuRow(
+                        selectedMenu = selectedMenu,
+                        onMenuClick = { selectedMenu = it }
+                    )
+
+                    HomeBanner(
+                        images = homeBannerImages
+                    )
+
+                    Spacer(modifier = Modifier.height(28.dp))
+
+                    HomeRecommendationTitle(
+                        name = "김솝트",
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    HomeCategoryRow(
+                        selectedCategory = selectedCategory,
+                        onCategoryClick = { selectedCategory = it },
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+            }
         )
     }
 }
