@@ -1,5 +1,6 @@
 package org.sopt.play.ui.login
 
+import android.R.attr.password
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -51,13 +52,13 @@ class LoginViewModel: ViewModel() {
         registeredPassword = password
     }
 
-    fun onEmailChange(email: String) {
+    private fun onEmailChange(email: String) {
         _uiState.update { currentState ->
             currentState.copy(email = email)
         }
     }
 
-    fun onPasswordChange(password: String) {
+    private fun onPasswordChange(password: String) {
         _uiState.update { currentState ->
             currentState.copy(password = password)
         }

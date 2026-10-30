@@ -1,6 +1,5 @@
 package org.sopt.play.ui.navigation
 
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,23 +43,13 @@ fun AppNavigation(
         entryProvider = entryProvider {
             entry<Route.Login> {
                 LoginRoute(
-                    onLoginClick = { email, password ->
-                        if (
-                            email == registeredEmail &&
-                            password == registeredPassword
-                        ) {
-                            backStack.clear()
-                            backStack.add(Route.Main)
-                        } else {
-                            Toast.makeText(
-                                context,
-                                "이메일 또는 비밀번호가 올바르지 않아요.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                    registeredEmail = registeredEmail,
+                    registeredPassword = registeredPassword,
+                    onNavigateToHome = {
+                        backStack.clear()
+                        backStack.add(Route.Main)
                     },
-                    onRegisterClick = {
-                        // 회원가입 버튼 연속 클릭으로 회원가입 화면이 중복으로 추가되는 것을 방지
+                    onNavigateToRegister = {
                         if (backStack.lastOrNull() == Route.Login) {
                             backStack.add(Route.Register)
                         }
