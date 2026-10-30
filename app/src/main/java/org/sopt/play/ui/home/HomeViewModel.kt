@@ -12,7 +12,7 @@ import org.sopt.play.ui.home.model.HomeProduct
 
 class HomeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState(products = homeProducts))
-    var uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     fun processIntent(intent: HomeIntent) {
         when(intent) {
