@@ -21,6 +21,7 @@ import org.sopt.play.ui.component.PlayTextFieldType
 import org.sopt.play.ui.component.ProductCard
 import org.sopt.play.ui.favorite.FavoriteScreen
 import org.sopt.play.ui.home.HomeScreen
+import org.sopt.play.ui.home.HomeUiState
 import org.sopt.play.ui.home.component.HomeBanner
 import org.sopt.play.ui.home.component.HomeCategory
 import org.sopt.play.ui.home.component.HomeCategoryRow
@@ -30,8 +31,10 @@ import org.sopt.play.ui.home.component.HomeProductGrid
 import org.sopt.play.ui.home.component.HomeRecommendationTitle
 import org.sopt.play.ui.home.model.HomeProduct
 import org.sopt.play.ui.login.LoginScreen
+import org.sopt.play.ui.login.LoginUiState
 import org.sopt.play.ui.main.MainScreen
 import org.sopt.play.ui.mypage.MyPageScreen
+import org.sopt.play.ui.register.RegisterUiState
 import org.sopt.play.ui.register.RegisterScreen
 import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.White
@@ -43,6 +46,9 @@ import org.sopt.play.ui.theme.White
 private fun LoginScreenPreview() {
     PlaySoptTheme {
         LoginScreen(
+            uiState = LoginUiState(),
+            onEmailChange = {},
+            onPasswordChange = {},
             onLoginClick = { _, _ -> },
             onRegisterClick = {}
         )
@@ -54,6 +60,11 @@ private fun LoginScreenPreview() {
 private fun RegisterScreenPreview() {
     PlaySoptTheme {
         RegisterScreen(
+            uiState = RegisterUiState(),
+            onNameChange = {},
+            onEmailChange = {},
+            onPasswordChange = {},
+            onPasswordConfirmChange = {},
             onRegisterClick = { _, _ -> }
         )
     }
@@ -71,7 +82,12 @@ private fun MainScreenPreview() {
 @Composable
 private fun HomeScreenPreview() {
     PlaySoptTheme {
-        HomeScreen()
+        HomeScreen(
+            uiState = HomeUiState(),
+            onMenuClick = {},
+            onCategoryClick = {},
+            onFavoriteClick = {},
+        )
     }
 }
 
@@ -261,7 +277,8 @@ private fun ProductCardStatesPreview() {
                     price = "28,800",
                     isFavorite = false
                 ),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                onFavoriteClick = {},
             )
 
             ProductCard(
@@ -274,7 +291,8 @@ private fun ProductCardStatesPreview() {
                     price = "26,820",
                     isFavorite = true
                 ),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                onFavoriteClick = {},
             )
         }
     }
@@ -357,7 +375,8 @@ private fun CategoryRowPreview() {
 private fun ProductGridPreview() {
     PlaySoptTheme {
         HomeProductGrid(
-            products = previewProducts
+            products = previewProducts,
+            onFavoriteClick = {},
         )
     }
 }
