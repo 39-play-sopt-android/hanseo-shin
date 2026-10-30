@@ -15,9 +15,21 @@ fun HomeRoute(
 
     HomeScreen(
         uiState = uiState,
-        onMenuClick = viewModel::onMenuClick,
-        onCategoryClick = viewModel::onCategoryClick,
-        onFavoriteClick = viewModel::onFavoriteClick,
+        onMenuClick = { menu ->
+            viewModel.processIntent(
+                HomeIntent.SelectMenu(menu)
+            )
+        },
+        onCategoryClick = { category ->
+            viewModel.processIntent(
+                HomeIntent.SelectCategory(category)
+            )
+        },
+        onFavoriteClick = { productId ->
+            viewModel.processIntent(
+                HomeIntent.ToggleFavorite(productId)
+            )
+        },
         modifier = modifier
     )
 }
