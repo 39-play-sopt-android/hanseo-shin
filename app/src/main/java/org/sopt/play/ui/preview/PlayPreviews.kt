@@ -21,6 +21,7 @@ import org.sopt.play.ui.component.PlayTextFieldType
 import org.sopt.play.ui.component.ProductCard
 import org.sopt.play.ui.favorite.FavoriteScreen
 import org.sopt.play.ui.home.HomeScreen
+import org.sopt.play.ui.home.HomeUiState
 import org.sopt.play.ui.home.component.HomeBanner
 import org.sopt.play.ui.home.component.HomeCategory
 import org.sopt.play.ui.home.component.HomeCategoryRow
@@ -81,7 +82,11 @@ private fun MainScreenPreview() {
 @Composable
 private fun HomeScreenPreview() {
     PlaySoptTheme {
-        HomeScreen()
+        HomeScreen(
+            uiState = HomeUiState(),
+            onMenuClick = {},
+            onCategoryClick = {}
+        )
     }
 }
 

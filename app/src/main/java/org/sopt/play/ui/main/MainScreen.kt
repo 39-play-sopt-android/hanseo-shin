@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,9 +17,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import org.sopt.play.ui.component.BottomTab
 import org.sopt.play.ui.component.PlayBottomBar
 import org.sopt.play.ui.favorite.FavoriteScreen
+import org.sopt.play.ui.home.HomeRoute
 import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.White
-import org.sopt.play.ui.home.HomeScreen
 import org.sopt.play.ui.mypage.MyPageScreen
 
 @Composable
@@ -52,7 +51,7 @@ fun MainScreen(
             contentAlignment = Alignment.Center
         ) {
             when (selectedTab) {
-                BottomTab.Home -> HomeScreen()
+                BottomTab.Home -> HomeRoute()
                 BottomTab.Favorite -> FavoriteScreen()
                 BottomTab.MyPage -> MyPageScreen()
             }
