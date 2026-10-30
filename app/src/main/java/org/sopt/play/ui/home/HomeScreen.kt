@@ -25,6 +25,7 @@ fun HomeScreen(
     uiState: HomeUiState,
     onMenuClick: (HomeMenuType) -> Unit,
     onCategoryClick: (HomeCategory) -> Unit,
+    onFavoriteClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -36,6 +37,7 @@ fun HomeScreen(
 
         HomeProductGrid(
             products = uiState.products,
+            onFavoriteClick = onFavoriteClick,
             modifier = Modifier.weight(1f),
             header = {
                 Column {
@@ -87,7 +89,8 @@ private fun HomeScreenPreview() {
         HomeScreen(
             uiState = HomeUiState(),
             onMenuClick = {},
-            onCategoryClick = {}
+            onCategoryClick = {},
+            onFavoriteClick = {},
         )
     }
 }

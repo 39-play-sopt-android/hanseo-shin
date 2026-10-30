@@ -85,7 +85,8 @@ private fun HomeScreenPreview() {
         HomeScreen(
             uiState = HomeUiState(),
             onMenuClick = {},
-            onCategoryClick = {}
+            onCategoryClick = {},
+            onFavoriteClick = {},
         )
     }
 }
@@ -276,7 +277,8 @@ private fun ProductCardStatesPreview() {
                     price = "28,800",
                     isFavorite = false
                 ),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                onFavoriteClick = {},
             )
 
             ProductCard(
@@ -289,7 +291,8 @@ private fun ProductCardStatesPreview() {
                     price = "26,820",
                     isFavorite = true
                 ),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                onFavoriteClick = {},
             )
         }
     }
@@ -372,7 +375,8 @@ private fun CategoryRowPreview() {
 private fun ProductGridPreview() {
     PlaySoptTheme {
         HomeProductGrid(
-            products = previewProducts
+            products = previewProducts,
+            onFavoriteClick = {},
         )
     }
 }
