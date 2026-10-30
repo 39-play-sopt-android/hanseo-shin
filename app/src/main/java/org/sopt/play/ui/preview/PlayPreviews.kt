@@ -33,6 +33,7 @@ import org.sopt.play.ui.login.LoginScreen
 import org.sopt.play.ui.login.LoginUiState
 import org.sopt.play.ui.main.MainScreen
 import org.sopt.play.ui.mypage.MyPageScreen
+import org.sopt.play.ui.register.RegisterUiState
 import org.sopt.play.ui.register.RegisterScreen
 import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.White
@@ -58,6 +59,11 @@ private fun LoginScreenPreview() {
 private fun RegisterScreenPreview() {
     PlaySoptTheme {
         RegisterScreen(
+            uiState = RegisterUiState(),
+            onNameChange = {},
+            onEmailChange = {},
+            onPasswordChange = {},
+            onPasswordConfirmChange = {},
             onRegisterClick = { _, _ -> }
         )
     }

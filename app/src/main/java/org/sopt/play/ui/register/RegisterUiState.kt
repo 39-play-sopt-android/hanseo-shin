@@ -2,7 +2,7 @@ package org.sopt.play.ui.register
 
 import android.util.Patterns
 
-data class RegisterUisState(
+data class RegisterUiState(
     val name: String = "",
     val email: String = "",
     val password: String = "",

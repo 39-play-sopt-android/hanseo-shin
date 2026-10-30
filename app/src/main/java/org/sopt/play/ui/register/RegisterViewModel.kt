@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class RegisterViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(RegisterUisState())
-    val uiState: StateFlow<RegisterUisState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(RegisterUiState())
+    val uiState: StateFlow<RegisterUiState> = _uiState.asStateFlow()
 
     fun onNameChange(name: String) {
         _uiState.update { currentState ->

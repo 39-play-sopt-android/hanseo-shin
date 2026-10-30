@@ -13,8 +13,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import org.sopt.play.ui.login.LoginRoute
-import org.sopt.play.ui.login.LoginScreen
-import org.sopt.play.ui.register.RegisterScreen
+import org.sopt.play.ui.register.RegisterRoute
 import org.sopt.play.ui.main.MainScreen
 
 @Composable
@@ -70,7 +69,7 @@ fun AppNavigation(
             }
 
             entry<Route.Register> {
-                RegisterScreen(
+                RegisterRoute(
                     onRegisterClick = { email, password ->
                         registeredEmail = email
                         registeredPassword = password
