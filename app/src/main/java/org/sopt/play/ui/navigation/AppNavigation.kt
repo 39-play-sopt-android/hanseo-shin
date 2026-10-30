@@ -12,6 +12,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import org.sopt.play.ui.login.LoginRoute
 import org.sopt.play.ui.login.LoginScreen
 import org.sopt.play.ui.register.RegisterScreen
 import org.sopt.play.ui.main.MainScreen
@@ -43,7 +44,7 @@ fun AppNavigation(
         ),
         entryProvider = entryProvider {
             entry<Route.Login> {
-                LoginScreen(
+                LoginRoute(
                     onLoginClick = { email, password ->
                         if (
                             email == registeredEmail &&

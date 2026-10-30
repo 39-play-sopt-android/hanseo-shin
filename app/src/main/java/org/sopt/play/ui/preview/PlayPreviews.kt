@@ -30,6 +30,7 @@ import org.sopt.play.ui.home.component.HomeProductGrid
 import org.sopt.play.ui.home.component.HomeRecommendationTitle
 import org.sopt.play.ui.home.model.HomeProduct
 import org.sopt.play.ui.login.LoginScreen
+import org.sopt.play.ui.login.LoginUiState
 import org.sopt.play.ui.main.MainScreen
 import org.sopt.play.ui.mypage.MyPageScreen
 import org.sopt.play.ui.register.RegisterScreen
@@ -43,6 +44,9 @@ import org.sopt.play.ui.theme.White
 private fun LoginScreenPreview() {
     PlaySoptTheme {
         LoginScreen(
+            uiState = LoginUiState(),
+            onEmailChange = {},
+            onPasswordChange = {},
             onLoginClick = { _, _ -> },
             onRegisterClick = {}
         )
