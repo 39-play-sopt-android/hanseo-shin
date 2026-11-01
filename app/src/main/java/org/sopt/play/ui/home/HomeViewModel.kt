@@ -11,7 +11,12 @@ import org.sopt.play.ui.home.component.HomeMenuType
 import org.sopt.play.ui.home.model.HomeProduct
 
 class HomeViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(HomeUiState(products = homeProducts))
+    private val _uiState = MutableStateFlow(
+        HomeUiState(
+            products = homeProducts,
+            bannerImages = homeBannerImages
+        )
+    )
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     fun processIntent(intent: HomeIntent) {
@@ -92,4 +97,10 @@ private val homeProducts = listOf(
         discountRate = 40,
         price = "35,200"
     )
+)
+
+private val homeBannerImages = listOf(
+    R.drawable.img_home_banner_1,
+    R.drawable.img_home_banner_2,
+    R.drawable.img_home_banner_3
 )

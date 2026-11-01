@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.sopt.play.R
 import org.sopt.play.ui.component.HomeTopBar
 import org.sopt.play.ui.home.component.HomeBanner
 import org.sopt.play.ui.home.component.HomeCategory
@@ -47,7 +46,7 @@ fun HomeScreen(
                     )
 
                     HomeBanner(
-                        images = homeBannerImages
+                        images = uiState.bannerImages
                     )
 
                     Spacer(modifier = Modifier.height(28.dp))
@@ -71,12 +70,6 @@ fun HomeScreen(
         )
     }
 }
-
-private val homeBannerImages = listOf(
-    R.drawable.img_home_banner_1,
-    R.drawable.img_home_banner_2,
-    R.drawable.img_home_banner_3
-)
 
 @Preview(
     showBackground = true,

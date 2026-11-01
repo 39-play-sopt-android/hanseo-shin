@@ -7,5 +7,6 @@ import org.sopt.play.ui.home.model.HomeProduct
 data class HomeUiState (
     val selectedMenu: HomeMenuType = HomeMenuType.HOME,
     val selectedCategory: HomeCategory = HomeCategory.ALL,
-    val products: List<HomeProduct> = emptyList()
+    val products: List<HomeProduct> = emptyList(),
+    val bannerImages: List<Int> = emptyList()
 )
