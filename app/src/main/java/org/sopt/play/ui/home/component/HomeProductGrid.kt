@@ -19,6 +19,7 @@ import org.sopt.play.R
 @Composable
 fun HomeProductGrid(
     products: List<HomeProduct>,
+    onFavoriteClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null
 ) {
@@ -42,7 +43,10 @@ fun HomeProductGrid(
             key = { product -> product.id}
         ) { product ->
             ProductCard(
-                product = product
+                product = product,
+                onFavoriteClick = {
+                    onFavoriteClick(product.id)
+                }
             )
         }
     }
@@ -87,7 +91,8 @@ private fun HomeProductGridPreview() {
                     discountRate = 40,
                     price = "35,200"
                 )
-            )
+            ),
+            onFavoriteClick = {}
         )
     }
 }
