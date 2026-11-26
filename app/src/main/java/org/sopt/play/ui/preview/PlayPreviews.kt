@@ -38,6 +38,9 @@ import org.sopt.play.ui.register.RegisterUiState
 import org.sopt.play.ui.register.RegisterScreen
 import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.White
+import org.sopt.play.data.model.Post
+import org.sopt.play.ui.post.PostScreen
+import org.sopt.play.ui.post.PostUiState
 
 // 화면 Preview: 기본 크기와 큰 글꼴을 함께 표시
 
@@ -74,7 +77,9 @@ private fun RegisterScreenPreview() {
 @Composable
 private fun MainScreenPreview() {
     PlaySoptTheme {
-        MainScreen()
+        MainScreen(
+            onNavigateToPost = {}
+        )
     }
 }
 
@@ -87,6 +92,7 @@ private fun HomeScreenPreview() {
             onMenuClick = {},
             onCategoryClick = {},
             onFavoriteClick = {},
+            onSearchClick = {}
         )
     }
 }
@@ -379,6 +385,55 @@ private fun ProductGridPreview() {
             onFavoriteClick = {},
         )
     }
+}
+
+@PlayScreenPreviewAnnotation
+@Composable
+private fun PostScreenPreview() {
+    PlaySoptTheme {
+        PostScreen(
+            uiState = PostUiState(
+                posts = previewPosts
+            ),
+            onKeywordChange = {},
+            onSearch = {},
+            onCreateClick = {},
+            onPostClick = {},
+            onPostLongClick = {}
+        )
+    }
+}
+
+@PlayScreenPreviewAnnotation
+@Composable
+private fun PostScreenEmptyPreview() {
+    PlaySoptTheme {
+        PostScreen(
+            uiState = PostUiState(
+                keyword = "솝트",
+                showEmpty = true
+            ),
+            onKeywordChange = {},
+            onSearch = {},
+            onCreateClick = {},
+            onPostClick = {},
+            onPostLongClick = {}
+        )
+    }
+}
+
+private val previewPosts = List(8) { index ->
+    Post(
+        id = index.toLong() + 1,
+        title = "제목 ${index + 1}",
+        content = if (index == 0) {
+            "본문입니다.\n여러 줄의 본문도 표시할 수 있어요."
+        } else {
+            "본문입니다."
+        },
+        author = "작성자",
+        createdAtText = "2026.11.26"
+    )
 }
 
 // Preview 전용 상품 데이터
