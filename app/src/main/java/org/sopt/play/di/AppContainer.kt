@@ -6,6 +6,8 @@ import okhttp3.OkHttpClient
 import org.sopt.play.data.remote.service.PostService
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import org.sopt.play.data.repository.PostRepository
+import org.sopt.play.data.repository.PostRepositoryImpl
 
 class AppContainer {
 
@@ -30,8 +32,14 @@ class AppContainer {
             .build()
     }
 
-    val postService: PostService by lazy {
+    private val postService: PostService by lazy {
         retrofit.create(PostService::class.java)
+    }
+
+    val postRepository: PostRepository by lazy {
+        PostRepositoryImpl(
+            postService = postService
+        )
     }
 
     private companion object {
