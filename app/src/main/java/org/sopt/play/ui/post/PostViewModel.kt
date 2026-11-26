@@ -63,6 +63,20 @@ class PostViewModel(
                     author = intent.author
                 )
             }
+
+            is PostIntent.OpenDeleteDialog -> {
+                openDeleteDialog(intent.postId)
+            }
+
+            PostIntent.DismissDeleteDialog -> {
+                dismissDeleteDialog()
+            }
+
+            is PostIntent.DeletePost -> {
+                deletePost(
+                    authorizationCode = intent.authorizationCode
+                )
+            }
         }
     }
 
@@ -221,5 +235,83 @@ class PostViewModel(
                 message = error.toMessage(fallbackMessage)
             )
         )
+    }
+
+    private fun openDeleteDialog(postId: Long) {
+        if (_uiState.value.isSubmitting) return
+
+        _uiState.update {
+            it.copy(deletePostId = postId)
+        }
+    }
+
+    private fun dismissDeleteDialog() {
+        _uiState.update {
+            it.copy(deletePostId = null)
+        }
+    }
+
+    private fun deletePost(
+        authorizationCode: String
+    ) {
+        val currentState = _uiState.value
+        val postId = currentState.deletePostId ?: return
+
+        if (currentState.isSubmitting || currentState.isLoading) return
+
+        if (authorizationCode.isBlank()) {
+            viewModelScope.launch {
+                _sideEffect.send(
+                    PostSideEffect.ShowToast(
+                        message = "로그인 정보를 확인해주세요."
+                    )
+                )
+            }
+            return
+        }
+
+        // 요청 전에 상태를 변경해서 연속 클릭을 막고 다이얼로그를 닫아.
+        _uiState.update {
+            it.copy(
+                isSubmitting = true,
+                deletePostId = null
+            )
+        }
+
+        viewModelScope.launch {
+            try {
+                when (
+                    val result = postRepository.deletePost(
+                        authorizationCode = authorizationCode,
+                        postId = postId
+                    )
+                ) {
+                    is ApiResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = true,
+                                showEmpty = false
+                            )
+                        }
+
+                        fetchPosts()
+                    }
+
+                    is ApiResult.Failure -> {
+                        showError(
+                            error = result.error,
+                            fallbackMessage = "게시글을 삭제하지 못했어요."
+                        )
+                    }
+                }
+            } finally {
+                _uiState.update {
+                    it.copy(
+                        isSubmitting = false,
+                        isLoading = false
+                    )
+                }
+            }
+        }
     }
 }
