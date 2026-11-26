@@ -51,7 +51,11 @@ fun PostRoute(
                 PostIntent.ChangeKeyword(keyword)
             )
         },
-        onSearch = {},
+        onSearch = {
+            viewModel.processIntent(
+                PostIntent.SearchPosts
+            )
+        },
         onCreateClick = {
             viewModel.processIntent(
                 PostIntent.OpenCreateSheet
