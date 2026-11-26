@@ -11,11 +11,26 @@ data class PostUiState(
     val title: String = "",
     val content: String = "",
     val isSubmitting: Boolean = false,
-    val deletePostId: Long? = null
+    val deletePostId: Long? = null,
+    val editingPost: Post? = null
 ) {
+    val isEditSheetVisible: Boolean
+        get() = editingPost != null
+
     val isSubmitEnabled: Boolean
-        get() = title.isNotBlank() &&
-                content.isNotBlank() &&
-                !isLoading &&
-                !isSubmitting
+        get() {
+            val initialPost = editingPost
+
+            val isChanged = initialPost == null ||
+                    title != initialPost.title ||
+                    content != initialPost.content
+
+            return title.isNotBlank() &&
+                    content.isNotBlank() &&
+                    title.length <= 20 &&
+                    content.length <= 1_000 &&
+                    isChanged &&
+                    !isLoading &&
+                    !isSubmitting
+        }
 }
