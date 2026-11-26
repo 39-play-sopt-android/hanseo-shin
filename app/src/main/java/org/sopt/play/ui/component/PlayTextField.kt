@@ -28,6 +28,7 @@ import org.sopt.play.ui.theme.Gray6
 import org.sopt.play.ui.theme.PlayTypography
 import org.sopt.play.ui.theme.Red
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.ui.text.input.ImeAction
 
 enum class PlayTextFieldType {
@@ -46,7 +47,8 @@ fun PlayTextField(
     modifier: Modifier = Modifier,
     errorMessage: String? = null,
     imeAction: ImeAction = ImeAction.Next,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    singleLine: Boolean = true
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
@@ -87,7 +89,7 @@ fun PlayTextField(
                 )
                 .padding(all = 16.dp),
             textStyle = PlayTypography.m18,
-            singleLine = true, // 텍스트 입력값이 길어져도 한줄로 유지할 수 있게하는 속성 ( 심화 과제 1-1)
+            singleLine = singleLine, // PostBottomSheet에서 재사용을 위한 코드 변경
             cursorBrush = SolidColor(Gray5),
             visualTransformation = if (
                 type == PlayTextFieldType.Password

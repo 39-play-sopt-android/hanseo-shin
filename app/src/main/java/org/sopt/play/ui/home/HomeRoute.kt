@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeRoute(
+    onNavigateToPost: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel()
 ) {
@@ -30,6 +31,7 @@ fun HomeRoute(
                 HomeIntent.ToggleFavorite(productId)
             )
         },
+        onSearchClick = onNavigateToPost,
         modifier = modifier
     )
 }

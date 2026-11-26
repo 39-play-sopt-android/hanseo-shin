@@ -4,7 +4,8 @@ import android.util.Patterns
 
 data class LoginUiState(
     val email: String = "",
-    val password: String = ""
+    val password: String = "",
+    val isLoading: Boolean = false
 ) {
     val isEmailValid: Boolean
         get() = Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -27,5 +28,5 @@ data class LoginUiState(
         }
 
     val isLoginEnabled: Boolean
-        get () = isEmailValid && isPasswordValid
+        get() = isEmailValid && isPasswordValid && !isLoading
 }

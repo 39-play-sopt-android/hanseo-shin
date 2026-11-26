@@ -25,13 +25,14 @@ fun HomeScreen(
     onMenuClick: (HomeMenuType) -> Unit,
     onCategoryClick: (HomeCategory) -> Unit,
     onFavoriteClick: (Int) -> Unit,
+    onSearchClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         HomeTopBar(
-            onSearchClick = {}
+            onSearchClick = onSearchClick
         )
 
         HomeProductGrid(
@@ -84,6 +85,7 @@ private fun HomeScreenPreview() {
             onMenuClick = {},
             onCategoryClick = {},
             onFavoriteClick = {},
+            onSearchClick = {},
         )
     }
 }

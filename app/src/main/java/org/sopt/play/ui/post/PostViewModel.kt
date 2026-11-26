@@ -1,0 +1,483 @@
+package org.sopt.play.ui.post
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import org.sopt.play.data.remote.ApiError
+import org.sopt.play.data.remote.ApiResult
+import org.sopt.play.ui.util.toMessage
+import org.sopt.play.data.repository.PostRepository
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+
+class PostViewModel(
+    private val postRepository: PostRepository
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(PostUiState())
+    val uiState = _uiState.asStateFlow()
+
+    private val _sideEffect = Channel<PostSideEffect>(
+        capacity = Channel.BUFFERED
+    )
+    val sideEffect = _sideEffect.receiveAsFlow()
+
+    private var loadPostsJob: Job? = null
+
+    private var appliedKeyword: String? = null
+
+    init {
+        loadPosts()
+    }
+
+    fun processIntent(intent: PostIntent) {
+        when (intent) {
+            is PostIntent.ChangeKeyword -> {
+                _uiState.update {
+                    it.copy(keyword = intent.keyword)
+                }
+            }
+
+            PostIntent.LoadPosts -> {
+                loadPosts()
+            }
+
+            PostIntent.OpenCreateSheet -> {
+                openCreateSheet()
+            }
+
+            PostIntent.DismissCreateSheet -> {
+                dismissCreateSheet()
+            }
+
+            is PostIntent.ChangeTitle -> {
+                changeTitle(intent.title)
+            }
+
+            is PostIntent.ChangeContent -> {
+                changeContent(intent.content)
+            }
+
+            is PostIntent.CreatePost -> {
+                createPost(
+                    authorizationCode = intent.authorizationCode,
+                    author = intent.author
+                )
+            }
+
+            is PostIntent.OpenDeleteDialog -> {
+                openDeleteDialog(intent.postId)
+            }
+
+            PostIntent.DismissDeleteDialog -> {
+                dismissDeleteDialog()
+            }
+
+            is PostIntent.DeletePost -> {
+                deletePost(
+                    authorizationCode = intent.authorizationCode
+                )
+            }
+
+            PostIntent.SearchPosts -> {
+                searchPosts()
+            }
+
+            is PostIntent.OpenEditSheet -> {
+                openEditSheet(intent.postId)
+            }
+
+            PostIntent.DismissEditSheet -> {
+                dismissEditSheet()
+            }
+
+            is PostIntent.UpdatePost -> {
+                updatePost(
+                    authorizationCode = intent.authorizationCode
+                )
+            }
+        }
+    }
+
+    private fun openCreateSheet() {
+        if (_uiState.value.isSubmitting) return
+
+        _uiState.update {
+            it.copy(
+                isCreateSheetVisible = true,
+                editingPost = null,
+                deletePostId = null,
+                title = "",
+                content = ""
+            )
+        }
+    }
+
+    private fun dismissCreateSheet() {
+        _uiState.update {
+            it.copy(
+                isCreateSheetVisible = false,
+                title = "",
+                content = ""
+            )
+        }
+    }
+
+    private fun changeTitle(title: String) {
+        if (title.length > 20) return
+
+        _uiState.update {
+            it.copy(title = title)
+        }
+    }
+
+    private fun changeContent(content: String) {
+        if (content.length > 1_000) return
+
+        _uiState.update {
+            it.copy(content = content)
+        }
+    }
+
+    private fun loadPosts(
+        keyword: String? = appliedKeyword
+    ) {
+        if (_uiState.value.isSubmitting) return
+
+        val previousJob = loadPostsJob
+
+        _uiState.update {
+            it.copy(
+                isLoading = true,
+                showEmpty = false
+            )
+        }
+
+        loadPostsJob = viewModelScope.launch {
+            previousJob?.cancelAndJoin()
+
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    showEmpty = false
+                )
+            }
+
+            try {
+                fetchPosts(keyword)
+            } finally {
+                _uiState.update {
+                    it.copy(isLoading = false)
+                }
+            }
+        }
+    }
+
+    private suspend fun fetchPosts(
+        keyword: String? = appliedKeyword
+    ) {
+        when (
+            val result = postRepository.getPosts(
+                keyword = keyword
+            )
+        ) {
+            is ApiResult.Success -> {
+                appliedKeyword = keyword
+
+                _uiState.update {
+                    it.copy(
+                        posts = result.data,
+                        showEmpty = keyword != null &&
+                                result.data.isEmpty()
+                    )
+                }
+            }
+
+            is ApiResult.Failure -> {
+                showError(
+                    error = result.error,
+                    fallbackMessage = "게시글 목록을 불러오지 못했어요."
+                )
+            }
+        }
+    }
+
+    private fun searchPosts() {
+        if (_uiState.value.isSubmitting) return
+
+        val keyword = _uiState.value.keyword.trim()
+
+        if (keyword.isNotEmpty() && keyword.length !in 2..50) {
+            viewModelScope.launch {
+                _sideEffect.send(
+                    PostSideEffect.ShowToast(
+                        message = "검색어는 2자 이상 50자 이하로 입력해주세요."
+                    )
+                )
+            }
+            return
+        }
+
+        loadPosts(
+            keyword = keyword.takeIf { it.isNotEmpty() }
+        )
+    }
+
+    private fun createPost(
+        authorizationCode: String,
+        author: String
+    ) {
+        val currentState = _uiState.value
+
+        if (!currentState.isCreateSheetVisible) return
+        if (!currentState.isSubmitEnabled) return
+
+        if (authorizationCode.isBlank() || author.isBlank()) {
+            viewModelScope.launch {
+                _sideEffect.send(
+                    PostSideEffect.ShowToast(
+                        message = "로그인 정보를 확인해주세요."
+                    )
+                )
+            }
+            return
+        }
+
+        _uiState.update {
+            it.copy(
+                isSubmitting = true,
+                isCreateSheetVisible = false,
+                title = "",
+                content = ""
+            )
+        }
+
+        viewModelScope.launch {
+            try {
+                when (
+                    val result = postRepository.createPost(
+                        authorizationCode = authorizationCode,
+                        title = currentState.title,
+                        content = currentState.content,
+                        author = author
+                    )
+                ) {
+                    is ApiResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = true,
+                                showEmpty = false
+                            )
+                        }
+
+                        fetchPosts()
+                    }
+
+                    is ApiResult.Failure -> {
+                        showError(
+                            error = result.error,
+                            fallbackMessage = "게시글을 작성하지 못했어요."
+                        )
+                    }
+                }
+            } finally {
+                _uiState.update {
+                    it.copy(
+                        isSubmitting = false,
+                        isLoading = false
+                    )
+                }
+            }
+        }
+    }
+
+    private suspend fun showError(
+        error: ApiError,
+        fallbackMessage: String
+    ) {
+        _sideEffect.send(
+            PostSideEffect.ShowToast(
+                message = error.toMessage(fallbackMessage)
+            )
+        )
+    }
+
+    private fun openDeleteDialog(postId: Long) {
+        if (_uiState.value.isSubmitting) return
+
+        _uiState.update {
+            it.copy(deletePostId = postId)
+        }
+    }
+
+    private fun dismissDeleteDialog() {
+        _uiState.update {
+            it.copy(deletePostId = null)
+        }
+    }
+
+    private fun deletePost(
+        authorizationCode: String
+    ) {
+        val currentState = _uiState.value
+        val postId = currentState.deletePostId ?: return
+
+        if (currentState.isSubmitting || currentState.isLoading) return
+
+        if (authorizationCode.isBlank()) {
+            viewModelScope.launch {
+                _sideEffect.send(
+                    PostSideEffect.ShowToast(
+                        message = "로그인 정보를 확인해주세요."
+                    )
+                )
+            }
+            return
+        }
+
+        // 요청 전에 상태를 변경해서 연속 클릭을 막고 다이얼로그를 닫아.
+        _uiState.update {
+            it.copy(
+                isSubmitting = true,
+                deletePostId = null
+            )
+        }
+
+        viewModelScope.launch {
+            try {
+                when (
+                    val result = postRepository.deletePost(
+                        authorizationCode = authorizationCode,
+                        postId = postId
+                    )
+                ) {
+                    is ApiResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = true,
+                                showEmpty = false
+                            )
+                        }
+
+                        fetchPosts()
+                    }
+
+                    is ApiResult.Failure -> {
+                        showError(
+                            error = result.error,
+                            fallbackMessage = "게시글을 삭제하지 못했어요."
+                        )
+                    }
+                }
+            } finally {
+                _uiState.update {
+                    it.copy(
+                        isSubmitting = false,
+                        isLoading = false
+                    )
+                }
+            }
+        }
+    }
+
+    private fun openEditSheet(postId: Long) {
+        val currentState = _uiState.value
+
+        if (currentState.isSubmitting) return
+
+        val post = currentState.posts.find { it.id == postId }
+            ?: return
+
+        _uiState.update {
+            it.copy(
+                isCreateSheetVisible = false,
+                editingPost = post,
+                deletePostId = null,
+                title = post.title,
+                content = post.content
+            )
+        }
+    }
+
+    private fun dismissEditSheet() {
+        _uiState.update {
+            it.copy(
+                editingPost = null,
+                title = "",
+                content = ""
+            )
+        }
+    }
+
+    private fun updatePost(
+        authorizationCode: String
+    ) {
+        val currentState = _uiState.value
+        val editingPost = currentState.editingPost ?: return
+
+        if (!currentState.isSubmitEnabled) return
+
+        if (authorizationCode.isBlank()) {
+            viewModelScope.launch {
+                _sideEffect.send(
+                    PostSideEffect.ShowToast(
+                        message = "로그인 정보를 확인해주세요."
+                    )
+                )
+            }
+            return
+        }
+
+        _uiState.update {
+            it.copy(
+                isSubmitting = true,
+                editingPost = null,
+                title = "",
+                content = ""
+            )
+        }
+
+        viewModelScope.launch {
+            try {
+                when (
+                    val result = postRepository.updatePost(
+                        authorizationCode = authorizationCode,
+                        postId = editingPost.id,
+                        title = currentState.title,
+                        content = currentState.content
+                    )
+                ) {
+                    is ApiResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = true,
+                                showEmpty = false
+                            )
+                        }
+
+                        fetchPosts()
+                    }
+
+                    is ApiResult.Failure -> {
+                        showError(
+                            error = result.error,
+                            fallbackMessage = "게시글을 수정하지 못했어요."
+                        )
+                    }
+                }
+            } finally {
+                _uiState.update {
+                    it.copy(
+                        isSubmitting = false,
+                        isLoading = false
+                    )
+                }
+            }
+        }
+    }
+}

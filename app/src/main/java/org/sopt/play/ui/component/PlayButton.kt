@@ -17,6 +17,7 @@ import org.sopt.play.ui.theme.White
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +25,9 @@ fun PlayButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    containerColor: Color = Black,
+    contentColor: Color = White
 ) {
     CompositionLocalProvider(LocalRippleConfiguration provides null) { // 리플 효과 제거 (심화 과제 2)
         Button(
@@ -34,8 +37,8 @@ fun PlayButton(
             shape = CircleShape,
             contentPadding = PaddingValues(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Black,
-                contentColor = White,
+                containerColor = containerColor,
+                contentColor = contentColor,
                 disabledContainerColor = Gray1,
                 disabledContentColor = Gray3
             )

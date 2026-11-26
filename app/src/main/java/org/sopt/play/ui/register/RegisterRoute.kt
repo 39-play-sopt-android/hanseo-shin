@@ -10,7 +10,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun RegisterRoute(
-    onRegisterClick: (email: String, password: String) -> Unit,
+    onRegisterClick: (email: String, password: String, name: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RegisterViewModel = viewModel()
 ) {
@@ -23,7 +23,8 @@ fun RegisterRoute(
                 is RegisterSideEffect.RegisterSuccess -> {
                     currentOnRegisterClick(
                         effect.email,
-                        effect.password
+                        effect.password,
+                        effect.name
                     )
                 }
             }
