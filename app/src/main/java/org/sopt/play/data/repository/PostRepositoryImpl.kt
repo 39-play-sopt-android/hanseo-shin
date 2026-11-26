@@ -6,6 +6,7 @@ import org.sopt.play.data.remote.ApiResult
 import org.sopt.play.data.remote.apiCall
 import org.sopt.play.data.remote.apiCallWithoutData
 import org.sopt.play.data.remote.dto.CreatePostRequest
+import org.sopt.play.data.remote.dto.UpdatePostRequest
 import org.sopt.play.data.remote.service.PostService
 
 class PostRepositoryImpl(
@@ -78,6 +79,32 @@ class PostRepositoryImpl(
                 authorizationCode = authorizationCode,
                 postId = postId
             )
+        }
+    }
+
+    override suspend fun updatePost(
+        authorizationCode: String,
+        postId: Long,
+        title: String,
+        content: String
+    ): ApiResult<Unit> {
+        val result = apiCall {
+            postService.updatePost(
+                authorizationCode = authorizationCode,
+                postId = postId,
+                request = UpdatePostRequest(
+                    title = title,
+                    content = content
+                )
+            )
+        }
+
+        return when (result) {
+            is ApiResult.Success -> {
+                ApiResult.Success(Unit)
+            }
+
+            is ApiResult.Failure -> result
         }
     }
 }

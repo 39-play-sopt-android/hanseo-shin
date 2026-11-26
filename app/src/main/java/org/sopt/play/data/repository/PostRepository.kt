@@ -20,4 +20,11 @@ interface PostRepository {
         authorizationCode: String,
         postId: Long,
     ) : ApiResult<Unit>
+
+    suspend fun updatePost(
+        authorizationCode: String,
+        postId: Long,
+        title: String,
+        content: String
+    ): ApiResult<Unit>
 }
