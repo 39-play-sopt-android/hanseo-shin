@@ -36,4 +36,14 @@ sealed interface PostIntent {
     data class DeletePost(
         val authorizationCode: String
     ) : PostIntent
+
+    data class OpenEditSheet(
+        val postId: Long
+    ) : PostIntent
+
+    data object DismissEditSheet : PostIntent
+
+    data class UpdatePost(
+        val authorizationCode: String
+    ) : PostIntent
 }
