@@ -4,6 +4,7 @@ import org.sopt.play.data.mapper.toPostDisplayDate
 import org.sopt.play.data.model.Post
 import org.sopt.play.data.remote.ApiResult
 import org.sopt.play.data.remote.apiCall
+import org.sopt.play.data.remote.apiCallWithoutData
 import org.sopt.play.data.remote.dto.CreatePostRequest
 import org.sopt.play.data.remote.service.PostService
 
@@ -58,6 +59,18 @@ class PostRepositoryImpl(
             }
 
             is ApiResult.Failure -> result
+        }
+    }
+
+    override suspend fun deletePost(
+        authorizationCode: String,
+        postId: Long
+    ): ApiResult<Unit> {
+        return apiCallWithoutData {
+            postService.deletePost(
+                authorizationCode = authorizationCode,
+                postId = postId
+            )
         }
     }
 }

@@ -13,4 +13,9 @@ interface PostRepository {
         content: String,
         author: String
     ) : ApiResult<Unit>
+
+    suspend fun deletePost(
+        authorizationCode: String,
+        postId: Long,
+    ) : ApiResult<Unit>
 }
