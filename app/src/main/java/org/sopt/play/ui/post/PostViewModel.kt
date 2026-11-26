@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.play.data.remote.ApiError
 import org.sopt.play.data.remote.ApiResult
+import org.sopt.play.ui.util.toMessage
 import org.sopt.play.data.repository.PostRepository
 
 class PostViewModel(
@@ -215,32 +216,10 @@ class PostViewModel(
         error: ApiError,
         fallbackMessage: String
     ) {
-        val message = when (error) {
-            ApiError.Network -> {
-                "네트워크 연결을 확인해주세요."
-            }
-
-            is ApiError.Http -> {
-                fallbackMessage
-            }
-
-            is ApiError.Server -> {
-                error.message.ifBlank {
-                    fallbackMessage
-                }
-            }
-
-            ApiError.InvalidResponse -> {
-                "서버 응답을 확인할 수 없어요."
-            }
-
-            ApiError.Unknown -> {
-                "알 수 없는 오류가 발생했어요."
-            }
-        }
-
         _sideEffect.send(
-            PostSideEffect.ShowToast(message)
+            PostSideEffect.ShowToast(
+                message = error.toMessage(fallbackMessage)
+            )
         )
     }
 }
