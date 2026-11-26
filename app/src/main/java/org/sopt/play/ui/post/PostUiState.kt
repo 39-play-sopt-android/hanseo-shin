@@ -10,7 +10,8 @@ data class PostUiState(
     val isCreateSheetVisible: Boolean = false,
     val title: String = "",
     val content: String = "",
-    val isSubmitting: Boolean = false
+    val isSubmitting: Boolean = false,
+    val deletePostId: Long? = null
 ) {
     val isSubmitEnabled: Boolean
         get() = title.isNotBlank() &&
