@@ -15,6 +15,7 @@ import androidx.navigation3.ui.NavDisplay
 import org.sopt.play.ui.login.LoginRoute
 import org.sopt.play.ui.register.RegisterRoute
 import org.sopt.play.ui.main.MainScreen
+import org.sopt.play.ui.post.PostRoute
 
 @Composable
 fun AppNavigation(
@@ -71,7 +72,17 @@ fun AppNavigation(
             }
 
             entry<Route.Main> {
-                MainScreen()
+                MainScreen(
+                    onNavigateToPost = {
+                        if (backStack.lastOrNull() == Route.Main) {
+                            backStack.add(Route.Post)
+                        }
+                    }
+                )
+            }
+
+            entry<Route.Post> {
+                PostRoute()
             }
         }
     )

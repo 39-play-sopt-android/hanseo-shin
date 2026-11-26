@@ -24,6 +24,7 @@ import org.sopt.play.ui.mypage.MyPageScreen
 
 @Composable
 fun MainScreen(
+    onNavigateToPost: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedTab by rememberSaveable {
@@ -51,7 +52,9 @@ fun MainScreen(
             contentAlignment = Alignment.Center
         ) {
             when (selectedTab) {
-                BottomTab.Home -> HomeRoute()
+                BottomTab.Home -> HomeRoute(
+                    onNavigateToPost = onNavigateToPost
+                )
                 BottomTab.Favorite -> FavoriteScreen()
                 BottomTab.MyPage -> MyPageScreen()
             }
@@ -63,6 +66,8 @@ fun MainScreen(
 @Composable
 private fun MainScreenPreview() {
     PlaySoptTheme {
-        MainScreen()
+        MainScreen(
+            onNavigateToPost = {}
+        )
     }
 }
