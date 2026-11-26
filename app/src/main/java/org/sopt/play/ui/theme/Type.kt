@@ -48,11 +48,27 @@ object PlayTypography {
         letterSpacing = (-0.01).em
     )
 
+    val m16 = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        lineHeight = 19.2.sp,
+        letterSpacing = (-0.01).em
+    )
+
     val m14 = TextStyle(
         fontFamily = Pretendard,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 16.8.sp,
+        letterSpacing = (-0.01).em
+    )
+
+    val m12 = TextStyle(
+        fontFamily = Pretendard,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        lineHeight = 14.4.sp,
         letterSpacing = (-0.01).em
     )
 
