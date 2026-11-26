@@ -11,12 +11,19 @@ import org.sopt.play.data.remote.service.PostService
 class PostRepositoryImpl(
     private val postService: PostService
 ) : PostRepository {
-    override suspend fun getPosts(): ApiResult<List<Post>> {
-        return when (
-            val result = apiCall {
-                postService.getPosts()
-            }
-        ) {
+
+    override suspend fun getPosts(
+        keyword: String?
+    ): ApiResult<List<Post>> {
+        val result = apiCall {
+            postService.getPosts(
+                keyword = keyword
+                    ?.trim()
+                    ?.takeIf { it.isNotEmpty() }
+            )
+        }
+
+        return when (result) {
             is ApiResult.Success -> {
                 ApiResult.Success(
                     data = result.data.posts.map { post ->

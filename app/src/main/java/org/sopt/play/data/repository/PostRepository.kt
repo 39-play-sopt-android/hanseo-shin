@@ -5,7 +5,9 @@ import org.sopt.play.data.remote.ApiResult
 
 interface PostRepository {
 
-    suspend fun getPosts(): ApiResult<List<Post>>
+    suspend fun getPosts(
+        keyword: String? = null
+    ): ApiResult<List<Post>>
 
     suspend fun createPost(
         authorizationCode: String,
