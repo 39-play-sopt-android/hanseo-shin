@@ -12,6 +12,8 @@ import org.sopt.play.data.remote.ApiError
 import org.sopt.play.data.remote.ApiResult
 import org.sopt.play.ui.util.toMessage
 import org.sopt.play.data.repository.PostRepository
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 
 class PostViewModel(
     private val postRepository: PostRepository
@@ -24,6 +26,10 @@ class PostViewModel(
         capacity = Channel.BUFFERED
     )
     val sideEffect = _sideEffect.receiveAsFlow()
+
+    private var loadPostsJob: Job? = null
+
+    private var appliedKeyword: String? = null
 
     init {
         loadPosts()
@@ -77,6 +83,10 @@ class PostViewModel(
                     authorizationCode = intent.authorizationCode
                 )
             }
+
+            PostIntent.SearchPosts -> {
+                searchPosts()
+            }
         }
     }
 
@@ -118,10 +128,12 @@ class PostViewModel(
         }
     }
 
-    private fun loadPosts() {
-        val currentState = _uiState.value
+    private fun loadPosts(
+        keyword: String? = appliedKeyword
+    ) {
+        if (_uiState.value.isSubmitting) return
 
-        if (currentState.isLoading || currentState.isSubmitting) return
+        val previousJob = loadPostsJob
 
         _uiState.update {
             it.copy(
@@ -130,9 +142,18 @@ class PostViewModel(
             )
         }
 
-        viewModelScope.launch {
+        loadPostsJob = viewModelScope.launch {
+            previousJob?.cancelAndJoin()
+
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    showEmpty = false
+                )
+            }
+
             try {
-                fetchPosts()
+                fetchPosts(keyword)
             } finally {
                 _uiState.update {
                     it.copy(isLoading = false)
@@ -141,11 +162,23 @@ class PostViewModel(
         }
     }
 
-    private suspend fun fetchPosts() {
-        when (val result = postRepository.getPosts()) {
+    private suspend fun fetchPosts(
+        keyword: String? = appliedKeyword
+    ) {
+        when (
+            val result = postRepository.getPosts(
+                keyword = keyword
+            )
+        ) {
             is ApiResult.Success -> {
+                appliedKeyword = keyword
+
                 _uiState.update {
-                    it.copy(posts = result.data)
+                    it.copy(
+                        posts = result.data,
+                        showEmpty = keyword != null &&
+                                result.data.isEmpty()
+                    )
                 }
             }
 
@@ -156,6 +189,27 @@ class PostViewModel(
                 )
             }
         }
+    }
+
+    private fun searchPosts() {
+        if (_uiState.value.isSubmitting) return
+
+        val keyword = _uiState.value.keyword.trim()
+
+        if (keyword.isNotEmpty() && keyword.length !in 2..50) {
+            viewModelScope.launch {
+                _sideEffect.send(
+                    PostSideEffect.ShowToast(
+                        message = "검색어는 2자 이상 50자 이하로 입력해주세요."
+                    )
+                )
+            }
+            return
+        }
+
+        loadPosts(
+            keyword = keyword.takeIf { it.isNotEmpty() }
+        )
     }
 
     private fun createPost(

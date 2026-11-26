@@ -8,6 +8,8 @@ sealed interface PostIntent {
 
     data object LoadPosts : PostIntent
 
+    data object SearchPosts : PostIntent
+
     data object OpenCreateSheet : PostIntent
 
     data object DismissCreateSheet : PostIntent
