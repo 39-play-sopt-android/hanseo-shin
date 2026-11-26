@@ -76,7 +76,8 @@ class RegisterViewModel : ViewModel() {
             _sideEffect.emit(
                 RegisterSideEffect.RegisterSuccess(
                     email = currentState.email,
-                    password = currentState.password
+                    password = currentState.password,
+                    name = currentState.name
                 )
             )
         }
