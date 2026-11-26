@@ -87,6 +87,20 @@ class PostViewModel(
             PostIntent.SearchPosts -> {
                 searchPosts()
             }
+
+            is PostIntent.OpenEditSheet -> {
+                openEditSheet(intent.postId)
+            }
+
+            PostIntent.DismissEditSheet -> {
+                dismissEditSheet()
+            }
+
+            is PostIntent.UpdatePost -> {
+                updatePost(
+                    authorizationCode = intent.authorizationCode
+                )
+            }
         }
     }
 
@@ -96,6 +110,8 @@ class PostViewModel(
         _uiState.update {
             it.copy(
                 isCreateSheetVisible = true,
+                editingPost = null,
+                deletePostId = null,
                 title = "",
                 content = ""
             )
@@ -355,6 +371,102 @@ class PostViewModel(
                         showError(
                             error = result.error,
                             fallbackMessage = "게시글을 삭제하지 못했어요."
+                        )
+                    }
+                }
+            } finally {
+                _uiState.update {
+                    it.copy(
+                        isSubmitting = false,
+                        isLoading = false
+                    )
+                }
+            }
+        }
+    }
+
+    private fun openEditSheet(postId: Long) {
+        val currentState = _uiState.value
+
+        if (currentState.isSubmitting) return
+
+        val post = currentState.posts.find { it.id == postId }
+            ?: return
+
+        _uiState.update {
+            it.copy(
+                isCreateSheetVisible = false,
+                editingPost = post,
+                deletePostId = null,
+                title = post.title,
+                content = post.content
+            )
+        }
+    }
+
+    private fun dismissEditSheet() {
+        _uiState.update {
+            it.copy(
+                editingPost = null,
+                title = "",
+                content = ""
+            )
+        }
+    }
+
+    private fun updatePost(
+        authorizationCode: String
+    ) {
+        val currentState = _uiState.value
+        val editingPost = currentState.editingPost ?: return
+
+        if (!currentState.isSubmitEnabled) return
+
+        if (authorizationCode.isBlank()) {
+            viewModelScope.launch {
+                _sideEffect.send(
+                    PostSideEffect.ShowToast(
+                        message = "로그인 정보를 확인해주세요."
+                    )
+                )
+            }
+            return
+        }
+
+        _uiState.update {
+            it.copy(
+                isSubmitting = true,
+                editingPost = null,
+                title = "",
+                content = ""
+            )
+        }
+
+        viewModelScope.launch {
+            try {
+                when (
+                    val result = postRepository.updatePost(
+                        authorizationCode = authorizationCode,
+                        postId = editingPost.id,
+                        title = currentState.title,
+                        content = currentState.content
+                    )
+                ) {
+                    is ApiResult.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = true,
+                                showEmpty = false
+                            )
+                        }
+
+                        fetchPosts()
+                    }
+
+                    is ApiResult.Failure -> {
+                        showError(
+                            error = result.error,
+                            fallbackMessage = "게시글을 수정하지 못했어요."
                         )
                     }
                 }
