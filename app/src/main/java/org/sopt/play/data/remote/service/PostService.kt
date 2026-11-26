@@ -11,6 +11,8 @@ import retrofit2.http.POST
 import retrofit2.http.DELETE
 import retrofit2.http.Path
 import retrofit2.http.Query
+import org.sopt.play.data.remote.dto.UpdatePostRequest
+import retrofit2.http.PUT
 
 interface PostService {
 
@@ -30,4 +32,11 @@ interface PostService {
         @Header("Authorization") authorizationCode: String,
         @Path("postId") postId: Long
     ): BaseResponse<Unit>
+
+    @PUT("api/v1/posts/{postId}")
+    suspend fun updatePost(
+        @Header("Authorization") authorizationCode: String,
+        @Path("postId") postId: Long,
+        @Body request: UpdatePostRequest
+    ): BaseResponse<PostDetailResponse>
 }
