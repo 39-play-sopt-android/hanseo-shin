@@ -9,9 +9,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.play.PlayApplication
+import org.sopt.play.ui.post.component.PostBottomSheet
 
 @Composable
 fun PostRoute(
+    authorizationCode: String,
+    author: String,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -48,9 +51,44 @@ fun PostRoute(
             )
         },
         onSearch = {},
-        onCreateClick = {},
+        onCreateClick = {
+            viewModel.processIntent(
+                PostIntent.OpenCreateSheet
+            )
+        },
         onPostClick = {},
         onPostLongClick = {},
         modifier = modifier
     )
+
+    if (uiState.isCreateSheetVisible) {
+        PostBottomSheet(
+            title = uiState.title,
+            content = uiState.content,
+            onTitleChange = { title ->
+                viewModel.processIntent(
+                    PostIntent.ChangeTitle(title)
+                )
+            },
+            onContentChange = { content ->
+                viewModel.processIntent(
+                    PostIntent.ChangeContent(content)
+                )
+            },
+            onSubmit = {
+                viewModel.processIntent(
+                    PostIntent.CreatePost(
+                        authorizationCode = authorizationCode,
+                        author = author
+                    )
+                )
+            },
+            onDismissRequest = {
+                viewModel.processIntent(
+                    PostIntent.DismissCreateSheet
+                )
+            },
+            isSubmitEnabled = uiState.isSubmitEnabled
+        )
+    }
 }
