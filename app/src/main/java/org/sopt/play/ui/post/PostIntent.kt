@@ -24,4 +24,14 @@ sealed interface PostIntent {
         val authorizationCode: String,
         val author: String
     ) : PostIntent
+
+    data class OpenDeleteDialog(
+        val postId: Long
+    ) : PostIntent
+
+    data object DismissDeleteDialog : PostIntent
+
+    data class DeletePost(
+        val authorizationCode: String
+    ) : PostIntent
 }
