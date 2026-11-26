@@ -10,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.play.PlayApplication
 import org.sopt.play.ui.post.component.PostBottomSheet
+import org.sopt.play.ui.post.component.PostDeleteDialog
 
 @Composable
 fun PostRoute(
@@ -57,7 +58,13 @@ fun PostRoute(
             )
         },
         onPostClick = {},
-        onPostLongClick = {},
+        onPostLongClick = { postId ->
+            viewModel.processIntent(
+                PostIntent.OpenDeleteDialog(
+                    postId = postId
+                )
+            )
+        },
         modifier = modifier
     )
 
@@ -89,6 +96,23 @@ fun PostRoute(
                 )
             },
             isSubmitEnabled = uiState.isSubmitEnabled
+        )
+    }
+
+    if (uiState.deletePostId != null) {
+        PostDeleteDialog(
+            onDeleteClick = {
+                viewModel.processIntent(
+                    PostIntent.DeletePost(
+                        authorizationCode = authorizationCode
+                    )
+                )
+            },
+            onDismissRequest = {
+                viewModel.processIntent(
+                    PostIntent.DismissDeleteDialog
+                )
+            }
         )
     }
 }
