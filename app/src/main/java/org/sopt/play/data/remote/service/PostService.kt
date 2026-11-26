@@ -8,6 +8,8 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.DELETE
+import retrofit2.http.Path
 
 interface PostService {
 
@@ -19,4 +21,10 @@ interface PostService {
         @Header("Authorization") authorizationCode: String,
         @Body request: CreatePostRequest
     ): BaseResponse<PostDetailResponse>
+
+    @DELETE("api/v1/posts/{postId}")
+    suspend fun deletePost(
+        @Header("Authorization") authorizationCode: String,
+        @Path("postId") postId: Long
+    ): BaseResponse<Unit>
 }
