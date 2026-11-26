@@ -61,7 +61,13 @@ fun PostRoute(
                 PostIntent.OpenCreateSheet
             )
         },
-        onPostClick = {},
+        onPostClick = { postId ->
+            viewModel.processIntent(
+                PostIntent.OpenEditSheet(
+                    postId = postId
+                )
+            )
+        },
         onPostLongClick = { postId ->
             viewModel.processIntent(
                 PostIntent.OpenDeleteDialog(
@@ -117,6 +123,36 @@ fun PostRoute(
                     PostIntent.DismissDeleteDialog
                 )
             }
+        )
+    }
+
+    if (uiState.isEditSheetVisible) {
+        PostBottomSheet(
+            title = uiState.title,
+            content = uiState.content,
+            onTitleChange = { title ->
+                viewModel.processIntent(
+                    PostIntent.ChangeTitle(title)
+                )
+            },
+            onContentChange = { content ->
+                viewModel.processIntent(
+                    PostIntent.ChangeContent(content)
+                )
+            },
+            onSubmit = {
+                viewModel.processIntent(
+                    PostIntent.UpdatePost(
+                        authorizationCode = authorizationCode
+                    )
+                )
+            },
+            onDismissRequest = {
+                viewModel.processIntent(
+                    PostIntent.DismissEditSheet
+                )
+            },
+            isSubmitEnabled = uiState.isSubmitEnabled
         )
     }
 }
