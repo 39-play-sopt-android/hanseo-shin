@@ -8,6 +8,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import org.sopt.play.data.repository.PostRepository
 import org.sopt.play.data.repository.PostRepositoryImpl
+import org.sopt.play.data.remote.service.AuthService
+import org.sopt.play.data.repository.AuthRepository
+import org.sopt.play.data.repository.AuthRepositoryImpl
 
 class AppContainer {
 
@@ -39,6 +42,16 @@ class AppContainer {
     val postRepository: PostRepository by lazy {
         PostRepositoryImpl(
             postService = postService
+        )
+    }
+
+    private val authService: AuthService by lazy {
+        retrofit.create(AuthService::class.java)
+    }
+
+    val authRepository: AuthRepository by lazy {
+        AuthRepositoryImpl(
+            authService = authService
         )
     }
 
