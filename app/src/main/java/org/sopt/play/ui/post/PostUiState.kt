@@ -1,6 +1,6 @@
 package org.sopt.play.ui.post
 
-import org.sopt.play.ui.post.model.Post
+import org.sopt.play.data.model.Post
 
 data class PostUiState(
     val keyword: String = "",

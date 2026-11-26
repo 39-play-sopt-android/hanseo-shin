@@ -1,4 +1,4 @@
-package org.sopt.play.ui.post.util
+package org.sopt.play.data.mapper
 
 private val postDatePattern = Regex("""\d{4}-\d{2}-\d{2}""")
 

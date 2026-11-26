@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import org.sopt.play.ui.component.PlayFloatingButton
 import org.sopt.play.ui.post.component.PostCard
 import org.sopt.play.ui.post.component.PostSearchField
-import org.sopt.play.ui.post.model.Post
+import org.sopt.play.data.model.Post
 import org.sopt.play.ui.theme.Gray3
 import org.sopt.play.ui.theme.PlaySoptTheme
 import org.sopt.play.ui.theme.PlayTypography

@@ -1,4 +1,4 @@
-package org.sopt.play.ui.post.model
+package org.sopt.play.data.model
 
 data class Post(
     val id: Long,
