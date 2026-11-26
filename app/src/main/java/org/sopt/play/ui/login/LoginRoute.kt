@@ -9,18 +9,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import org.sopt.play.PlayApplication
 
 @Composable
 fun LoginRoute(
     registeredEmail: String?,
     registeredPassword: String?,
-    onNavigateToHome: () -> Unit,
+    onNavigateToHome: (String) -> Unit,
     onNavigateToRegister: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = viewModel()
+    modifier: Modifier = Modifier
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val application =
+        context.applicationContext as PlayApplication
+
+    val viewModel: LoginViewModel = viewModel {
+        LoginViewModel(
+            authRepository = application.container.authRepository
+        )
+    }
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val currentOnNavigateToHome by rememberUpdatedState(onNavigateToHome)
     val currentOnNavigateToRegister by rememberUpdatedState(onNavigateToRegister)
@@ -35,8 +44,8 @@ fun LoginRoute(
     LaunchedEffect(viewModel, context) {
         viewModel.sideEffect.collect { effect ->
             when (effect) {
-                LoginSideEffect.NavigateToHome -> {
-                    currentOnNavigateToHome()
+                is LoginSideEffect.NavigateToHome -> {
+                    currentOnNavigateToHome(effect.authorizationCode)
                 }
 
                 LoginSideEffect.NavigateToRegister -> {
