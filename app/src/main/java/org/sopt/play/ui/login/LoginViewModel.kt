@@ -1,6 +1,5 @@
 package org.sopt.play.ui.login
 
-import android.R.attr.password
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -11,8 +10,13 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.play.data.remote.ApiResult
+import org.sopt.play.ui.util.toMessage
+import org.sopt.play.data.repository.AuthRepository
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel(
+    private val authRepository: AuthRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
@@ -75,16 +79,45 @@ class LoginViewModel: ViewModel() {
                     currentState.email == registeredEmail &&
                     currentState.password == registeredPassword
 
-        if (isAccountMatched) {
-            sendSideEffect(
-                LoginSideEffect.NavigateToHome
-            )
-        } else {
+        if (!isAccountMatched) {
             sendSideEffect(
                 LoginSideEffect.ShowToast(
                     message = "이메일 또는 비밀번호가 올바르지 않아요."
                 )
             )
+            return
+        }
+
+        _uiState.update {
+            it.copy(isLoading = true)
+        }
+
+        viewModelScope.launch {
+            try {
+                when (val result = authRepository.issueAuthorizationCode()) {
+                    is ApiResult.Success -> {
+                        _sideEffect.emit(
+                            LoginSideEffect.NavigateToHome(
+                                authorizationCode = result.data
+                            )
+                        )
+                    }
+
+                    is ApiResult.Failure -> {
+                        _sideEffect.emit(
+                            LoginSideEffect.ShowToast(
+                                message = result.error.toMessage(
+                                    fallbackMessage = "인증 코드를 발급받지 못했어요. 다시 시도해주세요."
+                                )
+                            )
+                        )
+                    }
+                }
+            } finally {
+                _uiState.update {
+                    it.copy(isLoading = false)
+                }
+            }
         }
     }
 
@@ -93,4 +126,5 @@ class LoginViewModel: ViewModel() {
             _sideEffect.emit(effect)
         }
     }
+
 }
